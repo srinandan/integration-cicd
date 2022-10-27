@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# gcloud builds submit --config=deploy.yaml --project=project-name --substitutions _NAME=test,_FILE=sample.json
+# gcloud builds submit --config=deploy.yaml --project=project-name --region=us-west1 --substitutions _NAME=test,_FILE=sample.json
 
 steps:
 - id: 'Import an integration version to a region'
@@ -21,11 +21,12 @@ steps:
   args:
     - -c
     - |
+      set -e
       gcloud auth print-access-token > /tmp/token
-      export INTEGRATIONCLI_SKIPLOG=false
+      #export INTEGRATIONCLI_SKIPLOG=false
       /tmp/integrationcli prefs set integrationcli prefs set --nocheck=true --apigee-integration=false --reg=$LOCATION --proj=$PROJECT_ID
-      /tmp/integrationcli integrations create -n $_NAME -f $_FILE -s _SNAPSHOT -t $(cat /tmp/token)
-      /tmp/integrationcli integrations versions publish -n $_NAME --snapshot $_SNAPSHOT -t $(cat /tmp/token)
+      /tmp/integrationcli integrations create -n $_NAME -f $_FILE -s $_SNAPSHOT -t $(cat /tmp/token)
+      /tmp/integrationcli integrations versions publish -n $_NAME -s $_SNAPSHOT -t $(cat /tmp/token)
 
 options:
   logging: CLOUD_LOGGING_ONLY
