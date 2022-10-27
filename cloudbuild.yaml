@@ -33,3 +33,6 @@ steps:
       gcloud auth print-access-token > /tmp/token
       /tmp/integrationcli prefs set integrationcli prefs set --nocheck=true --apigee-integration=false --reg=$LOCATION --proj=$PROJECT_ID
       /tmp/integrationcli integrations versions publish -n $_NAME --snapshot $_SNAPSHOT -t $(cat /tmp/token)
+
+options:
+  logging: CLOUD_LOGGING_ONLY
