@@ -19,12 +19,22 @@ token=$(gcloud auth print-access-token)
 integrationcli integrations versions get -n sample -v <version> -p <project-id> -r <region-name> -t $token > ./src/sample.json
 ```
 
+You can also download via a snapshot number like this:
+
+```sh
+
+token=$(gcloud auth print-access-token)
+integrationcli integrations versions get -n sample -s <snapshot> -p <project-id> -r <region-name> -t $token > ./src/sample.json
+```
+
 2. Trigger the build manually
 
 ```sh
 
 gcloud builds submit --config=cloudbuild.yaml --region=region-name --project=project-name --substitutions _NAME=sample,_SNAPSHOT=1,_FILE=./src/sample.json
 ```
+
+The integration is labeled with the `SHORT_SHA`, the first seven characters of the commit id
 
 ### Integration Cloud Builder
 
