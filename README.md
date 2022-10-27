@@ -26,6 +26,21 @@ integrationcli integrations versions get -n sample -v <version> -p <project-id> 
 gcloud builds submit --config=cloudbuild.yaml --region=region-name --project=project-name --substitutions _NAME=sample,_SNAPSHOT=1,_FILE=./src/sample.json
 ```
 
+### Integration Cloud Builder
+
+This repo uses a custom cloud builder based. You can create the custom cloud builder from
+
+1. The [cloudbuild.yaml](https://github.com/srinandan/integrationcli/blob/main/cloud-builder.yaml) file
+2. The [Dockerfile](https://github.com/srinandan/integrationcli/blob/main/Dockerfile.builder)
+
+```sh
+
+git clone https://github.com/srinandan/integrationcli.git
+gcloud builds submit --config=cloud-builder.yaml --project=you-project-name
+```
+
+Be sure to modify the [cloudbuild.yaml](./cloudbuild.yaml) file to point to the correct GCR repo.
+
 ___
 
 ## Support
