@@ -22,17 +22,9 @@ steps:
     - -c
     - |
       gcloud auth print-access-token > /tmp/token
-      /tmp/integrationcli prefs set integrationcli prefs set --nocheck=true --apigee-integration=false --reg=$LOCATION --proj=$PROJECT_ID
-      /tmp/integrationcli integrations create -n $_NAME -f $_FILE -s _SNAPSHOT -t $(cat /tmp/token)
-- id: 'Grab integrationcli, publish to a region'
-  name: gcr.io/$PROJECT_ID/integrationcli-builder:latest
-  entrypoint: 'bash'
-  args:
-    - -c
-    - |
-      gcloud auth print-access-token > /tmp/token
       export INTEGRATIONCLI_SKIPLOG=false
       /tmp/integrationcli prefs set integrationcli prefs set --nocheck=true --apigee-integration=false --reg=$LOCATION --proj=$PROJECT_ID
+      /tmp/integrationcli integrations create -n $_NAME -f $_FILE -s _SNAPSHOT -t $(cat /tmp/token)
       /tmp/integrationcli integrations versions publish -n $_NAME --snapshot $_SNAPSHOT -t $(cat /tmp/token)
 
 options:
