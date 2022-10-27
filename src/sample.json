@@ -305,7 +305,7 @@
 				}
 			},
 			"taskExecutionStrategy": "WHEN_ALL_SUCCEED",
-			"displayName": "Call httpbin service"
+			"displayName": "Call httpbin service1"
 		}
 	],
 	"integrationParameters": [
