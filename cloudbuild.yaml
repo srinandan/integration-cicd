@@ -29,7 +29,7 @@ steps:
 
       #this method is used to trigger directly from cloud build
       export _INTEGRATION_NAME=$(ls -A src | sed 's/\.json'$//)
-      export _INTEGRATION_FILE="./src/" $(ls -A src)
+      export _INTEGRATION_FILE="./src/"$(ls -A src)
       export _INTEGRATION_TOKEN=$(cat /tmp/token)
       
       /tmp/integrationcli prefs set integrationcli prefs set --nocheck=true --apigee-integration=false --reg=$LOCATION --proj=$PROJECT_ID
