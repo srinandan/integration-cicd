@@ -13,7 +13,7 @@
 # limitations under the License.
 
 #to manually trigger from glouc
-# gcloud builds submit --config=deploy.yaml --project=project-name --region=us-west1 --substitutions _NAME=test,_SNAPSHOT=1,_FILE=sample.json
+# gcloud builds submit --config=deploy.yaml --project=project-name --region=us-west1
 
 steps:
 - id: 'Import an integration version to a region'
@@ -27,7 +27,6 @@ steps:
       #uncomment this line to enable debugging
       #export INTEGRATIONCLI_SKIPLOG=false
 
-      #this method is used to trigger directly from cloud build
       ls -A src | sed 's/\.json'$// > /tmp/name
       echo "./src/"$(ls -A src) > /tmp/filename
       
@@ -41,10 +40,6 @@ steps:
       echo "integration version: " $(cat /tmp/version)
 
       /tmp/integrationcli integrations versions publish -n $(cat /tmp/name) -v $(cat /tmp/version)
-
-      # use the following method to manually trigger from gcloud
-      #/tmp/integrationcli integrations create -n $_NAME -f $_FILE -s $_SNAPSHOT -u $SHORT_SHA -t $(cat /tmp/token)
-      #/tmp/integrationcli integrations versions publish -n $_NAME -s $_SNAPSHOT -t $(cat /tmp/token)
 
 options:
   logging: CLOUD_LOGGING_ONLY

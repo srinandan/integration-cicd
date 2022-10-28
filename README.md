@@ -31,7 +31,7 @@ integrationcli integrations versions get -n sample -s <snapshot> -p <project-id>
 
 ```sh
 
-gcloud builds submit --config=cloudbuild.yaml --region=region-name --project=project-name --substitutions _NAME=sample,_SNAPSHOT=1,_FILE=./src/sample.json
+gcloud builds submit --config=cloudbuild.yaml --region=region-name --project=project-name
 ```
 
 The integration is labeled with the `SHORT_SHA`, the first seven characters of the commit id
