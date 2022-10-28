@@ -1,12 +1,12 @@
 # integration-cicd
 
-This sample repository demonstrates how one could build a CI/CD pipeline for Application Integration with Cloud Build.
+This sample repository demonstrates how one could build a CI/CD pipeline for [Application Integration](https://cloud.google.com/application-integration/docs/overview) with [Cloud Build](https://cloud.google.com/build/docs).
 
 # Instructions
 
 * The integration version JSON is downloaded [here](./src/sample.json). 
-* Once the changes are checked in and merged, the developer can trigger a deploy manually or triggered through Cloud Build
-* This repo uses a custom cloud builder called `integrationcli-builder`, based on [integrationcli](https://github.com/srinandan/integrationcli)
+* Once the changes are checked in and merged, the developer can deploy manually or trigger the deployment through Cloud Build
+* This repo uses a custom cloud builder called `integrationcli-builder`, based on [integrationcli](https://github.com/srinandan/integrationcli) and gcloud
 
 
 ## Steps

@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# gcloud builds submit --config=deploy.yaml --project=project-name --region=us-west1 --substitutions _NAME=test,_FILE=sample.json
+#to manually trigger from glouc
+# gcloud builds submit --config=deploy.yaml --project=project-name --region=us-west1 --substitutions _NAME=test,_SNAPSHOT=1,_FILE=sample.json
 
 steps:
 - id: 'Import an integration version to a region'
@@ -23,10 +24,21 @@ steps:
     - |
       set -e
       gcloud auth print-access-token > /tmp/token
+      #uncomment this line to enable debugging
       #export INTEGRATIONCLI_SKIPLOG=false
+
+      #this method is used to trigger directly from cloud build
+      export INTEGRATION_NAME=$(ls -A src | sed 's/\.json'$//)
+      export INTEGRATION_FILE="./src/" $(ls -A src)
+      export INTEGRATION_TOKEN=$(cat /tmp/token)
+      
       /tmp/integrationcli prefs set integrationcli prefs set --nocheck=true --apigee-integration=false --reg=$LOCATION --proj=$PROJECT_ID
-      /tmp/integrationcli integrations create -n $_NAME -f $_FILE -s $_SNAPSHOT -u $SHORT_SHA -t $(cat /tmp/token)
-      /tmp/integrationcli integrations versions publish -n $_NAME -s $_SNAPSHOT -t $(cat /tmp/token)
+      basename $(/tmp/integrationcli integrations create -n $INTEGRATION_NAME -f $INTEGRATION_FILE -u $SHORT_SHA -t $INTEGRATION_TOKEN | jq -r .name) > /tmp/version
+      /tmp/integrationcli integrations versions publish -n $INTEGRATION_NAME -v $(cat /tmp/version) -t $INTEGRATION_TOKEN
+
+      # use the following method to manually trigger from gcloud
+      #/tmp/integrationcli integrations create -n $_NAME -f $_FILE -s $_SNAPSHOT -u $SHORT_SHA -t $(cat /tmp/token)
+      #/tmp/integrationcli integrations versions publish -n $_NAME -s $_SNAPSHOT -t $(cat /tmp/token)
 
 options:
   logging: CLOUD_LOGGING_ONLY
