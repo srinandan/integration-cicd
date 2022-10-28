@@ -305,7 +305,7 @@
 				}
 			},
 			"taskExecutionStrategy": "WHEN_ALL_SUCCEED",
-			"displayName": "Call httpbin service - 9"
+			"displayName": "Call http sph service"
 		}
 	],
 	"integrationParameters": [
