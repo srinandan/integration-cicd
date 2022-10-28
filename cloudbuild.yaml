@@ -28,13 +28,13 @@ steps:
       #export INTEGRATIONCLI_SKIPLOG=false
 
       #this method is used to trigger directly from cloud build
-      export INTEGRATION_NAME=$(ls -A src | sed 's/\.json'$//)
-      export INTEGRATION_FILE="./src/" $(ls -A src)
-      export INTEGRATION_TOKEN=$(cat /tmp/token)
+      export _INTEGRATION_NAME=$(ls -A src | sed 's/\.json'$//)
+      export _INTEGRATION_FILE="./src/" $(ls -A src)
+      export _INTEGRATION_TOKEN=$(cat /tmp/token)
       
       /tmp/integrationcli prefs set integrationcli prefs set --nocheck=true --apigee-integration=false --reg=$LOCATION --proj=$PROJECT_ID
-      basename $(/tmp/integrationcli integrations create -n $INTEGRATION_NAME -f $INTEGRATION_FILE -u $SHORT_SHA -t $INTEGRATION_TOKEN | jq -r .name) > /tmp/version
-      /tmp/integrationcli integrations versions publish -n $INTEGRATION_NAME -v $(cat /tmp/version) -t $INTEGRATION_TOKEN
+      basename $(/tmp/integrationcli integrations create -n $_INTEGRATION_NAME -f $_INTEGRATION_FILE -u $SHORT_SHA -t $_INTEGRATION_TOKEN | jq -r .name) > /tmp/version
+      /tmp/integrationcli integrations versions publish -n $_INTEGRATION_NAME -v $(cat /tmp/version) -t $_INTEGRATION_TOKEN
 
       # use the following method to manually trigger from gcloud
       #/tmp/integrationcli integrations create -n $_NAME -f $_FILE -s $_SNAPSHOT -u $SHORT_SHA -t $(cat /tmp/token)
