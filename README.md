@@ -27,7 +27,25 @@ token=$(gcloud auth print-access-token)
 integrationcli integrations versions get -n sample -s <snapshot> -p <project-id> -r <region-name> -t $token > ./src/sample.json
 ```
 
-2. Trigger the build manually
+2. Author overrides (specific for the environment) and store them in the overrides folder. Here is an example overrides for the URL in the REST task
+
+```json
+{
+    "task_overrides": [{
+        "taskId": "1",
+        "parameters":  {
+            "url": {
+                "key": "url",
+                "value": {
+                    "stringValue": "https://httpbin.org/ip"
+                }
+            }
+        }
+    }]
+}
+```
+
+3. Trigger the build manually
 
 ```sh
 
