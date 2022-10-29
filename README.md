@@ -16,7 +16,7 @@ This sample repository demonstrates how one could build a CI/CD pipeline for [Ap
 ```sh
 
 token=$(gcloud auth print-access-token)
-integrationcli integrations versions get -n sample -v <version> -p <project-id> -r <region-name> -t $token > ./src/sample.json
+integrationcli integrations versions get -n <integration-name> -v <version> -p <project-id> -r <region-name> -t $token > ./src/<integration-name>.json
 ```
 
 You can also download via a snapshot number like this:
@@ -24,7 +24,7 @@ You can also download via a snapshot number like this:
 ```sh
 
 token=$(gcloud auth print-access-token)
-integrationcli integrations versions get -n sample -s <snapshot> -p <project-id> -r <region-name> -t $token > ./src/sample.json
+integrationcli integrations versions get -n <integration-name> -s <snapshot> -p <dev-project-id> -r <region-name> -t $token > ./src/<integration-name>.json
 ```
 
 2. Author overrides (specific for the environment) and store them in the overrides folder. Here is an example overrides for the URL in the REST task
@@ -49,7 +49,7 @@ integrationcli integrations versions get -n sample -s <snapshot> -p <project-id>
 
 ```sh
 
-gcloud builds submit --config=cloudbuild.yaml --region=region-name --project=project-name
+gcloud builds submit --config=cloudbuild.yaml --region=<region-name> --project=<qa-project-name>
 ```
 
 The integration is labeled with the `SHORT_SHA`, the first seven characters of the commit id
@@ -64,7 +64,7 @@ This repo uses a custom cloud builder based. You can create the custom cloud bui
 ```sh
 
 git clone https://github.com/srinandan/integrationcli.git
-gcloud builds submit --config=cloud-builder.yaml --project=you-project-name
+gcloud builds submit --config=cloud-builder.yaml --project=project-name
 ```
 
 Be sure to modify the [cloudbuild.yaml](./cloudbuild.yaml) file to point to the correct GCR repo.
