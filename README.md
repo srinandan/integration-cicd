@@ -54,6 +54,37 @@ gcloud builds submit --config=cloudbuild.yaml --region=<region-name> --project=<
 
 The integration is labeled with the `SHORT_SHA`, the first seven characters of the commit id
 
+## Overrides
+
+The overrides file contains configuration that is specific to an environment. The structure of the file is as follows:
+
+```yaml
+{
+    "trigger_overrides": [{
+        "triggerNumber": "1",
+        "triggerType": "CLOUD_PUBSUB_EXTERNAL",
+        "projectId": "my-project",
+        "topicName": "topic"
+    }],
+    "task_overrides": [{
+        "taskId": "1",
+        "task": "GenericRestV2Task",
+        "parameters":  {
+            //add parameters to override here
+        }
+    }]        
+    "connection_overrides": [{
+        "taskId": "1",
+        "task": "GenericConnectorTask",
+        "parameters": {
+            //add parameters to override here
+        }
+    }]
+}
+```
+
+For each override, `taskId` and `task` mandatory. `task` is the task type. Note the configuration settings for the connector task is separated from the rest of the tasks. You will find more samples [here](https://github.com/srinandan/integrationcli/tree/main/test)
+
 ### Integration Cloud Builder
 
 This repo uses a custom cloud builder based. You can create the custom cloud builder from
