@@ -85,6 +85,33 @@ The overrides file contains configuration that is specific to an environment. Th
 
 For each override, `taskId` and `task` mandatory. `task` is the task type. Note the configuration settings for the connector task is separated from the rest of the tasks. You will find more samples [here](https://github.com/srinandan/integrationcli/tree/main/test)
 
+### Auth Config Overrides
+
+Auth Configs must be created in each GCP project. The auth config name (which contains the version) different in each project. To override the auth config so it works in the new project, specify the auth config name in the overrides. Here is an example: 
+
+```yaml
+{
+    "task_overrides": [{
+        "taskId": "1",
+        "task": "CloudFunctionTask",
+        "parameters":  {
+            "TriggerUrl": {
+                "key": "TriggerUrl",
+                "value": {
+                    "stringValue": "https://region-project.cloudfunctions.net/helloWorld"
+                }
+            },            
+            "authConfig": {
+                "key": "authConfig",
+                "value": {
+                    "stringValue": "auth-config-name"
+                }
+            }
+        }
+    }]
+}
+```
+
 ### Integration Cloud Builder
 
 This repo uses a custom cloud builder based. You can create the custom cloud builder from
