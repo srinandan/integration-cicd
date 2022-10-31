@@ -33,6 +33,7 @@ integrationcli integrations versions get -n <integration-name> -s <snapshot> -p 
 {
     "task_overrides": [{
         "taskId": "1",
+        "task:": "GenericRestV2Task",
         "parameters":  {
             "url": {
                 "key": "url",
