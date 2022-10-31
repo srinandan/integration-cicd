@@ -24,8 +24,6 @@ steps:
     - |
       set -e
       gcloud auth print-access-token > /tmp/token
-      #uncomment this line to enable debugging
-      export INTEGRATIONCLI_SKIPLOG=false
 
       ls -A src | sed 's/\.json'$// > /tmp/name
       echo "./src/"$(ls -A src) > /tmp/filename
