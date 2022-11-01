@@ -33,7 +33,7 @@ steps:
       
       /tmp/integrationcli prefs set integrationcli prefs set --nocheck=true --apigee-integration=false --reg=$LOCATION --proj=$PROJECT_ID
       /tmp/integrationcli token cache -t $(cat /tmp/token)
-      /tmp/integrationcli integrations create -n $(cat /tmp/name) -f $(cat /tmp/filename) -u $SHORT_SHA -o ./overrides/overrides.json > /tmp/response
+      /tmp/integrationcli integrations create -n $(cat /tmp/name) -f $(cat /tmp/filename) -u $SHORT_SHA -o ./overrides/overrides.json --supress-warnings=true > /tmp/response
       echo "integration response: " $(cat /tmp/response)
       basename $(cat /tmp/response | jq -r .name) > /tmp/version
       echo "integration version: " $(cat /tmp/version)
