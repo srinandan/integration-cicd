@@ -84,9 +84,47 @@ The overrides file contains configuration that is specific to an environment. Th
 }
 ```
 
-For each override, `taskId` and `task` mandatory. `task` is the task type. Note the configuration settings for the connector task is separated from the rest of the tasks. You will find more samples [here](https://github.com/srinandan/integrationcli/tree/main/test)
+For each override, `taskId` and `task` mandatory. `task` is the task type. Note the configuration settings for the connector task is separated from the rest of the tasks. 
 
-### Auth Config Overrides
+### Creating Auth Configs
+
+The creation of Auth Config can also be automated via Cloud Build. Since AuthConfig contains sensitive information (like passwords, tokens etc.), it is recommended the file be encrypted before storing in a source code repo. Here is an example:
+
+Step 1: Author a Auth Config JSON file like so:
+
+```yaml
+{
+  "displayName": "authconfig-sample",
+  "description": "this is a sample auth config",
+  "visibility": "CLIENT_VISIBLE",
+  "decryptedCredential": {
+    "credentialType": "USERNAME_AND_PASSWORD",
+    "usernameAndPassword": {
+      "username": "test",
+      "password": "test"
+    }
+  }
+}
+```
+
+Step 2: Encrypt the file using cloud KMS and base64 encode the contents
+
+```sh
+gcloud kms encrypt  --project $project --location $location --keyring app-integration --key=integration --plaintext-file=ac_username.json --ciphertext-file=cipher.txt
+openssl base64 -in cipher.txt -out b64encoded_ac.txt
+```
+
+This file can be checked into the source code repo. A example file can be found [here](./samples/b64encoded_ac.txt)
+
+Step 3:  Use Cloud Build to trigger or submit changes
+
+A sample cloud build file is provided [here](./samples/authconfig_cloudbuild.yaml)
+
+```sh
+gcloud builds submit --config=cloudbuild.yaml --region=us-west1 --project=my-project --substitutions _FILE=./b64encoded_ac.txt,_KEY=keyRings/app-integration/cryptoKeys/integration
+```
+
+### Auth Config Overrides in Integration
 
 Auth Configs must be created in each GCP project. The auth config name (which contains the version) different in each project. To override the auth config so it works in the new project, specify the auth config name in the overrides. Here is an example: 
 
@@ -112,6 +150,13 @@ Auth Configs must be created in each GCP project. The auth config name (which co
     }]
 }
 ```
+
+### Examples
+
+1. [Cloud Functions](./samples/cloudfunctions.json) and [overrides](./samples/pubsub_overrides.json)
+2. [PubSub](./samples/pubsub.json) and [overrides](./samples/pubsub_overrides.json)
+3. [Usernanme Authconfig](./samples/ac_username.json)
+4. [OIDC Token](./samples/ac_oidc.json)
 
 ### Integration Cloud Builder
 
