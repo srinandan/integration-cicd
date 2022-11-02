@@ -32,7 +32,7 @@ steps:
       /tmp/integrationcli token cache -t $(cat /tmp/token)
       /tmp/integrationcli authconfigs create -e $_FILE -k $_KEY > /tmp/response
       # uncomment the following line if use unencrypted files
-      /tmp/integrationcli authconfigs create -f $_FILE > /tmp/response
+      # /tmp/integrationcli authconfigs create -f $_FILE > /tmp/response
       echo "authconfig response: " $(cat /tmp/response)
 
 options:
