@@ -88,9 +88,9 @@ For each override, `taskId` and `task` mandatory. `task` is the task type. Note 
 
 ### Creating Auth Configs
 
-The creation of Auth Config can also be automated via Cloud Build. Since AuthConfig contains sensitive information (like passwords, tokens etc.), it is recommended the file be encrypted before storing in a source code repo. Here is an example:
+The creation of Auth Config can also be automated via Cloud Build. Since AuthConfig contains sensitive information (like passwords, tokens etc.), it is recommended the file be encrypted before storing in a source code repo. Here is an example that encrypts the file:
 
-Step 1: Author a Auth Config JSON file like so:
+Step 1: Author a Auth Config [JSON file](./samples/ac_username.json) like so:
 
 ```yaml
 {
@@ -124,6 +124,8 @@ A sample cloud build file is provided [here](./samples/authconfig_cloudbuild.yam
 gcloud builds submit --config=cloudbuild.yaml --region=us-west1 --project=my-project --substitutions _FILE=./b64encoded_ac.txt,_KEY=keyRings/app-integration/cryptoKeys/integration
 ```
 
+NOTE: If you are don't want to encrypt the file, then skip step 2. Modify the [cloudbuild](./samples/authconfig_cloudbuild.yaml) file and follow instructions there to not use encryption.
+
 ### Auth Config Overrides in Integration
 
 Auth Configs must be created in each GCP project. The auth config name (which contains the version) different in each project. To override the auth config so it works in the new project, specify the auth config name in the overrides. Here is an example: 
@@ -153,12 +155,11 @@ Auth Configs must be created in each GCP project. The auth config name (which co
 
 ### Examples
 
-1. [Cloud Functions](./samples/cloudfunctions.json) and [overrides](./samples/pubsub_overrides.json)
-2. [PubSub](./samples/pubsub.json) and [overrides](./samples/pubsub_overrides.json)
-3. [Username Authconfig](./samples/ac_username.json)
-4. [OIDC Token](./samples/ac_oidc.json)
-5. [Base64 encoded Auth Config](./samples/64encoded_ac.txt)
-6. [Clear text Auth Config](ac_username.json)
+1. The [Cloud Functions](./samples/cloudfunctions.json) uses cloud functions task and the [overrides](./samples/pubsub_overrides.json) file demonstrates how to override it.
+2. The [PubSub](./samples/pubsub.json) uses a PubSub trigger and the [overrides](./samples/pubsub_overrides.json) file demonstrate how to override it.
+3. The [Username Authconfig](./samples/ac_username.json) file shows a clear text auth config file.
+4. The [OIDC Token](./samples/ac_oidc.json) file shows a clear text auth config file.
+5. The [Base64 encoded Auth Config](./samples/64encoded_ac.txt) file shows a Cloud KMS encrypted, base64 enncoded file.
 
 ### Integration Cloud Builder
 
