@@ -155,8 +155,10 @@ Auth Configs must be created in each GCP project. The auth config name (which co
 
 1. [Cloud Functions](./samples/cloudfunctions.json) and [overrides](./samples/pubsub_overrides.json)
 2. [PubSub](./samples/pubsub.json) and [overrides](./samples/pubsub_overrides.json)
-3. [Usernanme Authconfig](./samples/ac_username.json)
+3. [Username Authconfig](./samples/ac_username.json)
 4. [OIDC Token](./samples/ac_oidc.json)
+5. [Base64 encoded Auth Config](./samples/64encoded_ac.txt)
+6. [Clear text Auth Config](ac_username.json)
 
 ### Integration Cloud Builder
 
