@@ -78,7 +78,7 @@ The overrides file contains configuration that is specific to an environment. Th
         "taskId": "1",
         "task": "GenericConnectorTask",
         "parameters": {
-            //add parameters to override here
+             "connectionName": "add-connection-name-here"
         }
     }]
 }
