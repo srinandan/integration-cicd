@@ -17,7 +17,7 @@
 
 steps:
 - id: 'Import an integration version to a region'
-  name: gcr.io/$PROJECT_ID/integrationcli-builder:latest
+  name: ghcr.io/srinandan/integrationcli-builder:latest
   entrypoint: 'bash'
   args:
     - -c
@@ -27,10 +27,10 @@ steps:
 
       ls -A src | sed 's/\.json'$// > /tmp/name
       echo "./src/"$(ls -A src) > /tmp/filename
-      
+
       echo "name: " $(cat /tmp/name)
       echo "filename: " $(cat /tmp/filename)
-      
+
       /tmp/integrationcli prefs set integrationcli prefs set --nocheck=true --apigee-integration=false --reg=$LOCATION --proj=$PROJECT_ID
       /tmp/integrationcli token cache -t $(cat /tmp/token)
       /tmp/integrationcli integrations create -n $(cat /tmp/name) -f $(cat /tmp/filename) -u $SHORT_SHA -o ./overrides/overrides.json --supress-warnings=true > /tmp/response

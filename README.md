@@ -4,10 +4,24 @@ This sample repository demonstrates how one could build a CI/CD pipeline for [Ap
 
 # Instructions
 
-* The integration version JSON is downloaded [here](./src/sample.json). 
+* The integration version JSON is downloaded [here](./src/sample.json).
 * Once the changes are checked in and merged, the developer can deploy manually or trigger the deployment through Cloud Build
 * This repo uses a custom cloud builder called `integrationcli-builder`, based on [integrationcli](https://github.com/srinandan/integrationcli) and gcloud
 
+# Configuring Cloud Build
+
+In the setting page of Cloud Build enable the following service account permissions:
+* Secret Manager (Secret Manager Accessor)
+* Service Accounts (Service Account User)
+* Cloud Build (Cloud Build WorkerPool User)
+
+Grant the Application Integration Admin role to the Cloud Build Service Agent
+
+```
+    gcloud projects add-iam-policy-binding PROJECT_ID \
+        --member="serviceAccount:service-PROJECT_NUMBER@gcp-sa-cloudbuild.iam.gserviceaccount.com" \
+        --role="roles/integrations.integrationAdmin"
+```
 
 ## Steps
 
@@ -73,7 +87,7 @@ The overrides file contains configuration that is specific to an environment. Th
         "parameters":  {
             //add parameters to override here
         }
-    }]        
+    }]
     "connection_overrides": [{
         "taskId": "1",
         "task": "GenericConnectorTask",
@@ -129,7 +143,7 @@ NOTE: If you are don't want to encrypt the file, then skip step 2. Modify the [c
 
 ### Auth Config Overrides in Integration
 
-Auth Configs must be created in each GCP project. The auth config name (which contains the version) different in each project. To override the auth config so it works in the new project, specify the auth config name in the overrides. Here is an example: 
+Auth Configs must be created in each GCP project. The auth config name (which contains the version) different in each project. To override the auth config so it works in the new project, specify the auth config name in the overrides. Here is an example:
 
 ```yaml
 {
@@ -142,7 +156,7 @@ Auth Configs must be created in each GCP project. The auth config name (which co
                 "value": {
                     "stringValue": "https://region-project.cloudfunctions.net/helloWorld"
                 }
-            },            
+            },
             "authConfig": {
                 "key": "authConfig",
                 "value": {
@@ -161,21 +175,6 @@ Auth Configs must be created in each GCP project. The auth config name (which co
 3. The [Username Authconfig](./samples/ac_username.json) file shows a clear text auth config file.
 4. The [OIDC Token](./samples/ac_oidc.json) file shows a clear text auth config file.
 5. The [Base64 encoded Auth Config](./samples/64encoded_ac.txt) file shows a Cloud KMS encrypted, base64 enncoded file.
-
-### Integration Cloud Builder
-
-This repo uses a custom cloud builder based. You can create the custom cloud builder from
-
-1. The [cloudbuild.yaml](https://github.com/srinandan/integrationcli/blob/main/cloud-builder.yaml) file
-2. The [Dockerfile](https://github.com/srinandan/integrationcli/blob/main/Dockerfile.builder)
-
-```sh
-
-git clone https://github.com/srinandan/integrationcli.git
-gcloud builds submit --config=cloud-builder.yaml --project=project-name
-```
-
-Be sure to modify the [cloudbuild.yaml](./cloudbuild.yaml) file to point to the correct GCR repo.
 
 ___
 
